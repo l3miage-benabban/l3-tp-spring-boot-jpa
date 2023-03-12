@@ -56,6 +56,9 @@ public class Book {
     @ManyToMany(mappedBy = "books")
     private Set<Author> authors;
 
+    @ManyToOne
+    private Borrow borrow;
+
     public Long getId() {
         return id;
     }

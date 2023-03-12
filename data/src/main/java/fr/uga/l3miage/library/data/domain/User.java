@@ -13,6 +13,17 @@ public class User extends Person {
     @Column(name = "lateRat")
     private float lateRatio;
 
+    @OneToOne
+    private Borrow borrow;
+
+    public Borrow getBorrow() {
+        return this.borrow;
+    }
+
+    public void setBorrow(Borrow borrow) {
+        this.borrow = borrow;
+    }
+
     public Date getRegistered() {
         return registered;
     }

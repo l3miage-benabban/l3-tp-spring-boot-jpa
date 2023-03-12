@@ -82,21 +82,36 @@ class BorrowRepositoryTest extends Base {
     @Test
     void countCurrentBorrowedBooksByUser() {
 
-        // TODO
+        Borrow borrow1 = Fixtures.newBorrow(u1, l1, b1);
+        borrow1.setFinished(false);
+
+        Borrow borrow2 = Fixtures.newBorrow(u1, l1, b2);
+        borrow2.setFinished(true);
+
+        Borrow borrow3 = Fixtures.newBorrow(u1, l1, b3);
+        borrow3.setFinished(false);
+
+        entityManager.persist(borrow1);
+        entityManager.persist(borrow2);
+        entityManager.persist(borrow3);
+        entityManager.flush();
+
+        long count = repository.countCurrentBorrowedBooksByUser(u1.getId());
+        assertThat(count).isEqualTo(2L);
 
     }
 
     @Test
     void countBorrowedBooksByUser() {
 
-        // TODO
+        //TODO
 
     }
 
     @Test
     void foundAllLateBorrow() {
 
-        // TODO
+        //TODO
 
     }
 

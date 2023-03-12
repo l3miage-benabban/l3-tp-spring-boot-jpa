@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "borrows")
 public class Borrow {
-
     @Id
     @GeneratedValue
     private Long id;
