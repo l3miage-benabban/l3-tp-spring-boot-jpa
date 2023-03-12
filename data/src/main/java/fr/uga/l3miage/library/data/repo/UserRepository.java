@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -44,8 +45,9 @@ public class UserRepository implements CRUDRepository<String, User> {
      * @return
      */
     public List<User> findAllOlderThan(int age) {
-        // TODO
-        return null;
+        return entityManager.createQuery("SELECT u FROM User u WHERE u.birth < :maxBirthdate", User.class)
+                .setParameter("maxBirthdate", LocalDate.now().minusYears(age))
+                .getResultList();
     }
 
 }

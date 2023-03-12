@@ -3,14 +3,28 @@ package fr.uga.l3miage.library.data.domain;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "borrows")
 public class Borrow {
+    @Id
+    @GeneratedValue
     private Long id;
+
+    @ManyToMany
     private List<Book> books;
+
     private Date start;
+
     private Date requestedReturn;
+
+    @ManyToOne
     private User borrower;
+
+    @ManyToOne
     private Librarian librarian;
+
     private boolean finished;
 
     public Long getId() {
