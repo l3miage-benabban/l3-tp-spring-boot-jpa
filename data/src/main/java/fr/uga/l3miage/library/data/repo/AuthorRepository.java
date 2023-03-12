@@ -56,9 +56,9 @@ public class AuthorRepository implements CRUDRepository<Long, Author> {
      */
     public List<Author> searchByName(String namePart) {
         TypedQuery<Author> query = entityManager.createQuery(
-                "SELECT a FROM Author a WHERE LOWER(a.fullName) LIKE :namePart ORDER BY a.fullName",
+                "SELECT a FROM Author a WHERE a.fullName LIKE CONCAT('%', :namePart, '%')",
                 Author.class);
-        query.setParameter("namePart", "%" + namePart.toLowerCase() + "%");
+        query.setParameter("namePart", namePart);
         return query.getResultList();
     }
 
@@ -69,8 +69,9 @@ public class AuthorRepository implements CRUDRepository<Long, Author> {
      */
     public boolean checkAuthorByIdHavingCoAuthoredBooks(long authorId) {
         TypedQuery<Long> query = entityManager.createQuery(
-                "SELECT COUNT(DISTINCT b) FROM Book b JOIN b.authors a WHERE a.id = :authorId AND SIZE(b.authors) > 1",
-                Long.class);
+                "SELECT COUNT(b.id) FROM Book b WHERE b.id IN " +
+                        "(SELECT book.id FROM Book book JOIN book.authors author " +
+                        "WHERE author.id = :authorId) AND SIZE(b.authors) > 1", Long.class);
         query.setParameter("authorId", authorId);
         Long count = query.getSingleResult();
         return count > 0;

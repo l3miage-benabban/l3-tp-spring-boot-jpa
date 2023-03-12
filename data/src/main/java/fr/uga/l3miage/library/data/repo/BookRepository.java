@@ -54,6 +54,7 @@ public class BookRepository implements CRUDRepository<Long, Book> {
         // TODO créer les named query
         return entityManager.createNamedQuery("find-books-by-title", Book.class)
                 // TODO completer l'appel pour utiliser le paramètre de cette méthode
+                .setParameter("titlePart", titlePart)
                 .getResultList();
     }
 
@@ -67,6 +68,8 @@ public class BookRepository implements CRUDRepository<Long, Book> {
         // TODO créer les named query
         return entityManager.createNamedQuery("find-books-by-author-and-title", Book.class)
                 // TODO completer l'appel pour utiliser les paramètres de cette méthode
+                .setParameter("titlePart", titlePart)
+                .setParameter("authorId", authorId)
                 .getResultList();
     }
 
@@ -79,6 +82,7 @@ public class BookRepository implements CRUDRepository<Long, Book> {
         // TODO créer les named query
         return entityManager.createNamedQuery("find-books-by-authors-name", Book.class)
                 // TODO completer l'appel pour utiliser le paramètre de cette méthode
+                .setParameter("namePart", namePart)
                 .getResultList();
     }
 
@@ -91,6 +95,7 @@ public class BookRepository implements CRUDRepository<Long, Book> {
         // TODO créer les named query
         return entityManager.createNamedQuery("find-books-by-several-authors", Book.class)
                 // TODO completer l'appel pour utiliser le paramètre de cette méthode
+                .setParameter("count", count)
                 .getResultList();
     }
 }

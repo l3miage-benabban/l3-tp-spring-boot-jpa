@@ -8,6 +8,8 @@ import java.util.Set;
 
 
 @Entity
+@Table(name = "Book")
+
 @NamedQueries({
         @NamedQuery(
                 name = "all-books",
@@ -16,11 +18,11 @@ import java.util.Set;
 
         @NamedQuery(
                 name = "find-books-by-title",
-                query = "SELECT b FROM Book b WHERE LOWER(b.title) LIKE :title ORDER BY b.title ASC"
+                query = "SELECT b FROM Book b WHERE LOWER(b.title) LIKE CONCAT('%', :titlePart, '%') ORDER BY b.title ASC"
         ),
         @NamedQuery(
                 name = "find-books-by-author-and-title",
-                query = "SELECT b FROM Book b JOIN b.authors a WHERE a.id = :authorId AND LOWER(b.title) LIKE :title ORDER BY b.title ASC"
+                query = "SELECT b FROM Book b JOIN b.authors a WHERE a.id = :authorId AND LOWER(b.title) LIKE CONCAT('%', :titlePart, '%') ORDER BY b.title ASC"
         ),
         @NamedQuery(
                 name = "find-books-by-authors-name",
@@ -33,6 +35,7 @@ import java.util.Set;
 })
 
 public class Book {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -40,20 +43,17 @@ public class Book {
     @Basic(optional = false)
     private String title;
 
-
     private long isbn;
-
 
     private String publisher;
 
-
+    @Column(name = "annee")
     private short year;
 
-    @Enumerated(EnumType.STRING)
-    @Basic(optional = true)
+    @Enumerated(value= EnumType.STRING)
     private Language language;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "books")
     private Set<Author> authors;
 
     public Long getId() {

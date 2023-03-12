@@ -1,3 +1,4 @@
+
 package fr.uga.l3miage.library.data.domain;
 
 import jakarta.persistence.*;
@@ -8,15 +9,16 @@ import java.util.Set;
 
 
 @Entity
+@Table(name = "Author")
 public class Author {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Basic(optional = false)
     private String fullName;
-    @ManyToMany(mappedBy = "authors")
+
+    @ManyToMany
     private Set<Book> books;
 
     public Long getId() {
