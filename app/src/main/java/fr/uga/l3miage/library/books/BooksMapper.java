@@ -9,6 +9,7 @@ import java.util.Collection;
 public interface BooksMapper {
     BookDTO entityToDTO(Book book);
 
+
     Collection<BookDTO> entityToDTO(Iterable<Book> books);
 
     Book dtoToEntity(BookDTO book);

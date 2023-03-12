@@ -1,21 +1,59 @@
 package fr.uga.l3miage.library.data.domain;
 
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Book {
 
+@Entity
+@NamedQueries({
+        @NamedQuery(
+                name = "all-books",
+                query = "SELECT b FROM Book b ORDER BY b.title ASC"
+        ),
+
+        @NamedQuery(
+                name = "find-books-by-title",
+                query = "SELECT b FROM Book b WHERE LOWER(b.title) LIKE :title ORDER BY b.title ASC"
+        ),
+        @NamedQuery(
+                name = "find-books-by-author-and-title",
+                query = "SELECT b FROM Book b JOIN b.authors a WHERE a.id = :authorId AND LOWER(b.title) LIKE :title ORDER BY b.title ASC"
+        ),
+        @NamedQuery(
+                name = "find-books-by-authors-name",
+                query = "SELECT b FROM Book b JOIN b.authors a WHERE LOWER(a.fullName) LIKE CONCAT('%', LOWER(:namePart), '%') ORDER BY b.title ASC"
+        ),
+        @NamedQuery(
+                name = "find-books-by-several-authors",
+                query = "SELECT b FROM Book b WHERE SIZE(b.authors) > :count"
+        )
+})
+
+public class Book {
+    @Id
+    @GeneratedValue
     private Long id;
+
+    @Basic(optional = false)
     private String title;
+
+
     private long isbn;
+
+
     private String publisher;
+
+
     private short year;
+
+    @Enumerated(EnumType.STRING)
+    @Basic(optional = true)
     private Language language;
 
-    @Transient
+    @ManyToMany
     private Set<Author> authors;
 
     public Long getId() {

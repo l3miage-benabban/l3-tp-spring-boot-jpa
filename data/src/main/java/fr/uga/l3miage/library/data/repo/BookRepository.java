@@ -2,6 +2,8 @@ package fr.uga.l3miage.library.data.repo;
 
 import fr.uga.l3miage.library.data.domain.Book;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -91,5 +93,4 @@ public class BookRepository implements CRUDRepository<Long, Book> {
                 // TODO completer l'appel pour utiliser le paramètre de cette méthode
                 .getResultList();
     }
-
 }
