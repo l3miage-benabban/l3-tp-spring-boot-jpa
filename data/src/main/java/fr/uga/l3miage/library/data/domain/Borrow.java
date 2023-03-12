@@ -8,21 +8,22 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "borrows")
 public class Borrow {
+
     @Id
     @GeneratedValue
     private Long id;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "borrow")
     private List<Book> books;
 
     private Date start;
 
     private Date requestedReturn;
 
-    @ManyToOne
+    @OneToOne
     private User borrower;
 
-    @ManyToOne
+    @OneToOne
     private Librarian librarian;
 
     private boolean finished;

@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -45,8 +49,10 @@ public class UserRepository implements CRUDRepository<String, User> {
      * @return
      */
     public List<User> findAllOlderThan(int age) {
-        return entityManager.createQuery("SELECT u FROM User u WHERE u.birth < :maxBirthdate", User.class)
-                .setParameter("maxBirthdate", LocalDate.now().minusYears(age))
+        Date anneeMin = Date.from(ZonedDateTime.now().minus(age, ChronoUnit.YEARS).toInstant());
+        String query = "SELECT u FROM User u WHERE u.birth <= :anneeMin";
+        return entityManager.createQuery(query, User.class)
+                .setParameter("anneeMin", anneeMin)
                 .getResultList();
     }
 

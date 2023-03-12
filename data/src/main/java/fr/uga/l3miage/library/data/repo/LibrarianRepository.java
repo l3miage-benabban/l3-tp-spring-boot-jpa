@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -43,17 +44,13 @@ public class LibrarianRepository implements CRUDRepository<String, Librarian> {
      * @return les bibliothéquaires les plus actif
      */
     public List<Librarian> top3WorkingLibrarians() {
-        return entityManager.createNativeQuery(
-                        "SELECT l.* " +
-                                "FROM loan lo " +
-                                "JOIN book_copy bc ON bc.id = lo.copy_id " +
-                                "JOIN book b ON b.isbn = bc.isbn " +
-                                "JOIN librarian l ON l.id = lo.librarian_id " +
-                                "WHERE lo.returned_date IS NOT NULL " +
-                                "GROUP BY l.id " +
-                                "ORDER BY COUNT(*) DESC " +
-                                "LIMIT 3", Librarian.class)
-                .getResultList();
+        String query = "SELECT b.librarian, COUNT(*) FROM Borrow b GROUP BY b.librarian ORDER BY COUNT(*) DESC";
+        List<Object[]> results = entityManager.createQuery(query).setMaxResults(3).getResultList();
+        List<Librarian> best3Librarians = new ArrayList<>();
+        for (Object[] res : results) {
+            best3Librarians.add((Librarian) res[0]);
+        }
+        return best3Librarians;
     }
 
 }

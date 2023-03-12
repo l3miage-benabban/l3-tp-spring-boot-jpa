@@ -4,10 +4,10 @@ import java.util.Objects;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "librarians")
+@DiscriminatorValue("LIBRARIAN")
 public class Librarian extends Person {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Librarian manager;
 
     public Librarian getManager() {

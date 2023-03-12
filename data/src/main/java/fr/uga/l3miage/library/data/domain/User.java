@@ -6,8 +6,11 @@ import jakarta.persistence.*;
 
 // Attention le mot 'user' est reservé
 @Entity
+@DiscriminatorValue("UTILISATEUR")
 public class User extends Person {
+    @Temporal(TemporalType.DATE)
     private Date registered;
+    @Column(name = "lateRat")
     private float lateRatio;
 
     public Date getRegistered() {
